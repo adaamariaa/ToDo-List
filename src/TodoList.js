@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { AgGridReact } from 'ag-grid-react';
 import { useRef } from 'react';
-import ReactDOM from 'react-dom';
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-material.css';
 
