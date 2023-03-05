@@ -17,6 +17,7 @@ function TodoList(){
         return oldTodos.filter((todo, i) => i !== index)
         })
     }
+    
 
     return (
         <div>
@@ -27,7 +28,7 @@ function TodoList(){
             <button onClick={addTodo}>Add</button>
 
             </div>
-        <TodoTable todos={todos} /><button onClick={() => delTodo(index)}>Delete</button>
+        <TodoTable todos={todos} delTodo={delTodo}></TodoTable>
         </div>
         );
     }
