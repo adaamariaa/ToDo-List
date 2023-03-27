@@ -22,9 +22,9 @@ function TodoList(){
     const gridRef = useRef();
 
     const columns = [
-        { field: "description", sortable: true, filter: true },
-        { field: "date", sortable: true, filter: true },
-        { field: "priority", sortable: true, filter: true,
+        { field: "description", sortable: true, filter: true, floatingFilter: true, animateRows: true },
+        { field: "date", sortable: true, filter: true, floatingFilter: true, animateRows: true },
+        { field: "priority", sortable: true, filter: true, floatingFilter: true, animateRows: true, 
         cellStyle: params => params.value.toLowerCase() === "high" ? {color: 'red'} : {color: 'black'} }
         ]
         
@@ -52,6 +52,7 @@ function TodoList(){
         }
 
     return (
+        
     <LocalizationProvider dateAdapter={AdapterDayjs} >
         <div>
             <div id='box'>
