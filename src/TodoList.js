@@ -3,24 +3,42 @@ import { AgGridReact } from 'ag-grid-react';
 import { useRef } from 'react';
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-material.css';
+import Button from '@mui/material/Button';
+import TextField from '@mui/material/TextField';
+import Stack from '@mui/material/Stack';
+import { LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import dayjs from 'dayjs';
+
 
 function TodoList(){
-    const [todo, setTodo] = useState({description: '', date: '', priority: ''});
+    const now = dayjs();
+
+    const [todo, setTodo] = useState({description: '', date: now.format('DD.MM.YYYY'), priority: ''});
     const [todos, setTodos] = useState([]);
+    const [dateInput, setDateInput] = useState(now);
+
     const gridRef = useRef();
 
     const columns = [
         { field: "description", sortable: true, filter: true },
         { field: "date", sortable: true, filter: true },
         { field: "priority", sortable: true, filter: true,
-        cellStyle: params => params.value === "High" ? {color: 'red'} : {color: 'black'} }
+        cellStyle: params => params.value.toLowerCase() === "high" ? {color: 'red'} : {color: 'black'} }
         ]
         
     const inputChanged = (event) => {
     setTodo({...todo, [event.target.name]: event.target.value});
     }
+
     const addTodo = (event) => {
     setTodos([...todos, todo]);
+    }
+
+    const dateInputChanged = date =>{
+        setTodo({...todo, date: date.format('DD.MM.YYYY')});
+        setDateInput(date)
     }
 
     const deleteTodo = () => {
@@ -34,14 +52,32 @@ function TodoList(){
         }
 
     return (
+    <LocalizationProvider dateAdapter={AdapterDayjs} >
         <div>
             <div id='box'>
             <h3>Add Todo:</h3>
-            Date:<input type="date" onChange={inputChanged} placeholder="Date" name="date" value={todo.date}/>
-            Description:<input type="text" onChange={inputChanged} placeholder="Description" name="description" value={todo.description}/>
-            Priority:<input type="text" onChange={inputChanged} placeholder="Priority" name="priority" value={todo.priority}/>
-            <button onClick={addTodo}>Add</button>
-            <button onClick={deleteTodo}>Delete</button>
+            <Stack direction="row" spacing={2} justifyContent="center" alignItems="center">
+                
+            <DatePicker
+                label="Date"
+                value={dateInput} 
+                onChange={dateInputChanged}/>
+                
+            <TextField
+                label="Description"
+                variant="standard"
+                name="description" value={todo.description}
+                onChange={inputChanged}/>
+
+            <TextField
+                label="Priority"
+                variant="standard"
+                name="priority" value={todo.priority}
+                onChange={inputChanged}/>
+
+            <Button onClick={addTodo}>Add</Button>
+            <Button onClick={deleteTodo}>Delete</Button>
+            </Stack>
 
 
             </div>
@@ -58,6 +94,7 @@ function TodoList(){
               </div>
 
         </div>
+        </LocalizationProvider>
         );
     }
     export default TodoList;
